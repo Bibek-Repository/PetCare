@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:hint="Full Name"
-            app:boxMode="outline">
+            app:boxBackgroundMode="outline">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/nameEditText"
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:hint="Email"
-            app:boxMode="outline">
+            app:boxBackgroundMode="outline">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/emailEditText"
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:hint="Password"
-            app:boxMode="outline"
+            app:boxBackgroundMode="outline"
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:hint="Confirm Password"
-            app:boxMode="outline"
+            app:boxBackgroundMode="outline"
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
