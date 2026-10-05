@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_marginBottom="12dp"
+    android:background="#F5F5F5">
+
+    <TextView
+        android:id="@+id/taskTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Feed Max"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/taskPetTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="🐾 Max"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/taskScheduleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="Daily • 08:00 AM"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/taskSuppliesTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="Supplies: Dog food, bowl"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/taskNotesTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="Give after morning walk"
+        android:textSize="14sp" />
+
+    <CheckBox
+        android:id="@+id/taskCompletedCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Completed" />
+
+</LinearLayout>
