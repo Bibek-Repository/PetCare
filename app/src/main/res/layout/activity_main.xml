@@ -36,6 +36,14 @@
             android:text="+ Add Pet"
             android:textSize="16sp" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/viewPetsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="🐾 My Pets"
+            android:textSize="16sp" />
+
         <!-- Today's Tasks -->
         <TextView
             android:layout_width="wrap_content"

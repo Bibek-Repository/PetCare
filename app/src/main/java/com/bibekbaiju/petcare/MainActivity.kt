@@ -20,5 +20,11 @@ class MainActivity : AppCompatActivity() {
                 Intent(this, AddPetActivity::class.java)
             )
         }
+        val viewPetsButton =
+            findViewById<MaterialButton>(R.id.viewPetsButton)
+
+        viewPetsButton.setOnClickListener {
+            startActivity(Intent(this, PetsActivity::class.java))
+        }
     }
 }
