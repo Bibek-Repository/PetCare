@@ -23,6 +23,11 @@ class PetsActivity : AppCompatActivity() {
 
     private val pets = mutableListOf<Pet>()
 
+    override fun onResume() {
+        super.onResume()
+        loadPets()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pets)
@@ -40,7 +45,9 @@ class PetsActivity : AppCompatActivity() {
         adapter = PetAdapter(
             pets,
             onEditClick = { pet ->
-
+                val intent = Intent(this, EditPetActivity::class.java)
+                intent.putExtra("petId", pet.id)
+                startActivity(intent)
             },
             onDeleteClick = { pet ->
                 deletePet(pet)
