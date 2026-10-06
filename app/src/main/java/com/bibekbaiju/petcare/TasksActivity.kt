@@ -67,6 +67,129 @@ class TasksActivity : AppCompatActivity() {
                 Intent(this, AddTaskActivity::class.java)
             )
         }
+
+        setupTaskGestures()
+    }
+
+    private fun setupTaskGestures() {
+
+        val itemTouchHelper = androidx.recyclerview.widget.ItemTouchHelper(
+            object : androidx.recyclerview.widget.ItemTouchHelper.SimpleCallback(
+                0,
+                androidx.recyclerview.widget.ItemTouchHelper.LEFT or
+                        androidx.recyclerview.widget.ItemTouchHelper.RIGHT
+            ) {
+
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
+                }
+
+                override fun onSwiped(
+                    viewHolder: RecyclerView.ViewHolder,
+                    direction: Int
+                ) {
+
+                    val position =
+                        viewHolder.bindingAdapterPosition
+
+                    if (position == RecyclerView.NO_POSITION) {
+                        return
+                    }
+
+                    val task = tasks[position]
+
+                    if (direction ==
+                        androidx.recyclerview.widget.ItemTouchHelper.RIGHT
+                    ) {
+
+                        // Swipe right = mark completed
+                        updateTaskCompleted(task, true)
+
+                        task.completed = true
+
+                        adapter.notifyItemChanged(position)
+
+                        Toast.makeText(
+                            this@TasksActivity,
+                            "${task.title} marked completed",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    } else if (direction ==
+                        androidx.recyclerview.widget.ItemTouchHelper.LEFT
+                    ) {
+
+                        // Swipe left = delete
+                        deleteTask(task)
+                    }
+                }
+            }
+        )
+
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+
+        recyclerView.addOnItemTouchListener(
+            object : RecyclerView.SimpleOnItemTouchListener() {
+
+                private var downTime = 0L
+
+                override fun onInterceptTouchEvent(
+                    rv: RecyclerView,
+                    e: android.view.MotionEvent
+                ): Boolean {
+
+                    when (e.actionMasked) {
+
+                        android.view.MotionEvent.ACTION_DOWN -> {
+                            downTime = System.currentTimeMillis()
+                        }
+
+                        android.view.MotionEvent.ACTION_UP -> {
+
+                            val duration =
+                                System.currentTimeMillis() - downTime
+
+                            if (duration >= 600) {
+
+                                val child =
+                                    rv.findChildViewUnder(e.x, e.y)
+
+                                if (child != null) {
+
+                                    val position =
+                                        rv.getChildAdapterPosition(child)
+
+                                    if (position != RecyclerView.NO_POSITION) {
+
+                                        val task = tasks[position]
+
+                                        val intent = Intent(
+                                            this@TasksActivity,
+                                            EditTaskActivity::class.java
+                                        )
+
+                                        intent.putExtra(
+                                            "taskId",
+                                            task.id
+                                        )
+
+                                        startActivity(intent)
+
+                                        return true
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    return false
+                }
+            }
+        )
     }
 
     override fun onResume() {
