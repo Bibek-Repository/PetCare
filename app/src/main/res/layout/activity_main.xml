@@ -52,6 +52,7 @@
             android:textSize="16sp" />
 
         <!-- Today's Tasks -->
+        <!-- Today's Tasks -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,14 +61,23 @@
             android:textSize="21sp"
             android:textStyle="bold" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/todayTasksRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:nestedScrollingEnabled="false" />
+
         <TextView
+            android:id="@+id/noTodayTasksTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:padding="16dp"
             android:background="#F5F5F5"
-            android:text="☐ Feed your pet\n\n☐ Give medication\n\n☐ Groom your pet"
-            android:textSize="16sp" />
+            android:text="✓ No tasks for today"
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <!-- Upcoming -->
         <TextView

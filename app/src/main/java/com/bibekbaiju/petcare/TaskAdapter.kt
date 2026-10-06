@@ -13,7 +13,8 @@ class TaskAdapter(
     private val tasks: List<CareTask>,
     private val onCompletedChange: (CareTask, Boolean) -> Unit,
     private val onEditClick: (CareTask) -> Unit,
-    private val onDeleteClick: (CareTask) -> Unit
+    private val onDeleteClick: (CareTask) -> Unit,
+    private val onDelegateClick: (CareTask) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -41,6 +42,9 @@ class TaskAdapter(
 
         val deleteTaskButton: MaterialButton =
             itemView.findViewById(R.id.deleteTaskButton)
+
+        val delegateTaskButton: MaterialButton =
+            itemView.findViewById(R.id.delegateTaskButton)
     }
 
     override fun onCreateViewHolder(
@@ -83,17 +87,16 @@ class TaskAdapter(
                 task.notes
             }
 
-        // Prevent the listener from firing while RecyclerView reuses the view
         holder.taskCompletedCheckBox.setOnCheckedChangeListener(null)
 
-        holder.taskCompletedCheckBox.isChecked = task.completed
+        holder.taskCompletedCheckBox.isChecked =
+            task.completed
 
         updateCompletedAppearance(
             holder,
             task.completed
         )
 
-        // Completed checkbox
         holder.taskCompletedCheckBox.setOnCheckedChangeListener { _, isChecked ->
 
             task.completed = isChecked
@@ -109,14 +112,16 @@ class TaskAdapter(
             )
         }
 
-        // Edit button
         holder.editTaskButton.setOnClickListener {
             onEditClick(task)
         }
 
-        // Delete button
         holder.deleteTaskButton.setOnClickListener {
             onDeleteClick(task)
+        }
+
+        holder.delegateTaskButton.setOnClickListener {
+            onDelegateClick(task)
         }
     }
 

@@ -54,6 +54,11 @@ class TasksActivity : AppCompatActivity() {
             // Delete
             onDeleteClick = { task ->
                 deleteTask(task)
+            },
+
+            // Delegate by SMS
+            onDelegateClick = { task ->
+                delegateTaskBySms(task)
             }
         )
 
@@ -310,5 +315,40 @@ class TasksActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             }
+    }
+
+    private fun delegateTaskBySms(task: CareTask) {
+
+        val message = """
+        Hi, can you help with this pet care task?
+
+        Pet: ${task.petName}
+        Task: ${task.title}
+        Schedule: ${task.frequency} • ${task.time}
+        Supplies: ${if (task.supplies.isEmpty()) "None" else task.supplies}
+        Notes: ${if (task.notes.isEmpty()) "None" else task.notes}
+    """.trimIndent()
+
+        val intent = Intent(
+            Intent.ACTION_SENDTO
+        )
+
+        intent.data =
+            android.net.Uri.parse("smsto:")
+
+        intent.putExtra(
+            "sms_body",
+            message
+        )
+
+        try {
+            startActivity(intent)
+        } catch (exception: Exception) {
+            Toast.makeText(
+                this,
+                "No SMS app is available on this device",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 }
