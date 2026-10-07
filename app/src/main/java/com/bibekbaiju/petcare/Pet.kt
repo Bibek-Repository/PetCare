@@ -7,5 +7,6 @@ data class Pet(
     var breed: String = "",
     var age: String = "",
     var notes: String = "",
-    var userId: String = ""
+    var userId: String = "",
+    var imagePath: String = ""
 )

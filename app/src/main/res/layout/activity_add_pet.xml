@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,111 +10,105 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <!-- Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="🐾 Add a Pet"
+            android:text="Add Pet"
             android:textSize="28sp"
             android:textStyle="bold" />
 
-        <TextView
+        <ImageView
+            android:id="@+id/petImageView"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:background="#EEEEEE"
+            android:contentDescription="Pet photo"
+            android:scaleType="centerCrop"
+            android:src="@android:drawable/ic_menu_camera" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/selectPetImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:text="Add your pet's information"
-            android:textSize="15sp" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:text="Add Pet Photo" />
 
-        <!-- Pet Name -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:hint="Pet Name"
-            app:boxBackgroundMode="outline">
+            android:layout_marginTop="24dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/petNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
+                android:hint="Pet Name" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Species -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:hint="Species"
-            app:boxBackgroundMode="outline">
+            android:layout_marginTop="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/speciesEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:hint="Species" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Breed -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:hint="Breed"
-            app:boxBackgroundMode="outline">
+            android:layout_marginTop="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/breedEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:hint="Breed" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Age -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:hint="Age"
-            app:boxBackgroundMode="outline">
+            android:layout_marginTop="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/ageEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:hint="Age" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Notes -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:hint="Notes"
-            app:boxBackgroundMode="outline">
+            android:layout_marginTop="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/notesEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="top"
-                android:inputType="textMultiLine"
-                android:minLines="3" />
+                android:hint="Notes"
+                android:minLines="3"
+                android:gravity="top" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Save Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/savePetButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Save Pet"
-            android:textSize="16sp" />
+            android:text="Save Pet" />
 
     </LinearLayout>
 

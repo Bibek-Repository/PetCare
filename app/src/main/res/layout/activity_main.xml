@@ -51,6 +51,13 @@
             android:text="🐾 My Pets"
             android:textSize="16sp" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Logout" />
+
         <!-- Today's Tasks -->
         <!-- Today's Tasks -->
         <TextView

@@ -40,6 +40,9 @@ class MainActivity : AppCompatActivity() {
         val viewPetsButton =
             findViewById<MaterialButton>(R.id.viewPetsButton)
 
+        val logoutButton =
+            findViewById<MaterialButton>(R.id.logoutButton)
+
         addPetButton.setOnClickListener {
             startActivity(
                 Intent(this, AddPetActivity::class.java)
@@ -56,6 +59,23 @@ class MainActivity : AppCompatActivity() {
             startActivity(
                 Intent(this, PetsActivity::class.java)
             )
+        }
+
+        logoutButton.setOnClickListener {
+
+            FirebaseAuth.getInstance().signOut()
+
+            val intent = Intent(
+                this,
+                LoginActivity::class.java
+            )
+
+            intent.flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK or
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+            startActivity(intent)
+            finish()
         }
 
         // Today's Tasks

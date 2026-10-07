@@ -1,24 +1,48 @@
 package com.bibekbaiju.petcare
 
+import android.net.Uri
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.io.File
+import java.io.FileOutputStream
 
 class AddPetActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var petImageView: ImageView
+
+    private var selectedImageUri: Uri? = null
+
+    private val imagePicker =
+        registerForActivityResult(
+            ActivityResultContracts.GetContent()
+        ) { uri ->
+            if (uri != null) {
+                selectedImageUri = uri
+                petImageView.setImageURI(uri)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_add_pet)
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+
+        petImageView = findViewById(R.id.petImageView)
+
+        val selectPetImageButton =
+            findViewById<MaterialButton>(R.id.selectPetImageButton)
 
         val petNameEditText =
             findViewById<TextInputEditText>(R.id.petNameEditText)
@@ -37,6 +61,10 @@ class AddPetActivity : AppCompatActivity() {
 
         val savePetButton =
             findViewById<MaterialButton>(R.id.savePetButton)
+
+        selectPetImageButton.setOnClickListener {
+            imagePicker.launch("image/*")
+        }
 
         savePetButton.setOnClickListener {
 
@@ -72,6 +100,9 @@ class AddPetActivity : AppCompatActivity() {
             savePetButton.isEnabled = false
             savePetButton.text = "Saving..."
 
+            // Copy selected image into app storage
+            val imagePath = copyImageToInternalStorage()
+
             val pet = hashMapOf(
                 "name" to petName,
                 "species" to species,
@@ -79,6 +110,7 @@ class AddPetActivity : AppCompatActivity() {
                 "age" to age,
                 "notes" to notes,
                 "userId" to currentUser.uid,
+                "imagePath" to imagePath,
                 "createdAt" to System.currentTimeMillis()
             )
 
@@ -105,6 +137,43 @@ class AddPetActivity : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
                 }
+        }
+    }
+
+    private fun copyImageToInternalStorage(): String {
+
+        val uri = selectedImageUri ?: return ""
+
+        return try {
+
+            val directory = File(filesDir, "pet_images")
+
+            if (!directory.exists()) {
+                directory.mkdirs()
+            }
+
+            val fileName = "pet_${System.currentTimeMillis()}.jpg"
+            val destinationFile = File(directory, fileName)
+
+            contentResolver.openInputStream(uri)?.use { inputStream ->
+
+                FileOutputStream(destinationFile).use { outputStream ->
+
+                    inputStream.copyTo(outputStream)
+                }
+            }
+
+            destinationFile.absolutePath
+
+        } catch (exception: Exception) {
+
+            Toast.makeText(
+                this,
+                "Could not save image: ${exception.message}",
+                Toast.LENGTH_LONG
+            ).show()
+
+            ""
         }
     }
 }
