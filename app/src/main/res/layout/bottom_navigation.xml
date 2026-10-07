@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:orientation="horizontal"
+    android:background="#FFFFFF"
+    android:elevation="8dp">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/navHomeButton"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="⌂\nHome"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:backgroundTint="@android:color/transparent"
+        android:textColor="#333333" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/navPetsButton"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="🐾\nPets"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:backgroundTint="@android:color/transparent"
+        android:textColor="#333333" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/navTasksButton"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="✓\nTasks"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:backgroundTint="@android:color/transparent"
+        android:textColor="#333333" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/navProfileButton"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="👤\nProfile"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:backgroundTint="@android:color/transparent"
+        android:textColor="#333333" />
+
+</LinearLayout>

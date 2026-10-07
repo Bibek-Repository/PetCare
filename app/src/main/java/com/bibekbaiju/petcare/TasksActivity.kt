@@ -67,12 +67,46 @@ class TasksActivity : AppCompatActivity() {
 
         recyclerView.adapter = adapter
 
+        // Add Task button
         addTaskButton.setOnClickListener {
             startActivity(
                 Intent(this, AddTaskActivity::class.java)
             )
         }
 
+        // Bottom Navigation
+        val navHomeButton =
+            findViewById<MaterialButton>(R.id.navHomeButton)
+
+        val navPetsButton =
+            findViewById<MaterialButton>(R.id.navPetsButton)
+
+        val navTasksButton =
+            findViewById<MaterialButton>(R.id.navTasksButton)
+
+        val navProfileButton =
+            findViewById<MaterialButton>(R.id.navProfileButton)
+
+        navHomeButton.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
+
+        navPetsButton.setOnClickListener {
+            startActivity(Intent(this, PetsActivity::class.java))
+            finish()
+        }
+
+        navTasksButton.setOnClickListener {
+            // Already on Tasks
+        }
+
+        navProfileButton.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+            finish()
+        }
+
+        // Keep gesture controls
         setupTaskGestures()
     }
 
@@ -327,7 +361,7 @@ class TasksActivity : AppCompatActivity() {
         Schedule: ${task.frequency} • ${task.time}
         Supplies: ${if (task.supplies.isEmpty()) "None" else task.supplies}
         Notes: ${if (task.notes.isEmpty()) "None" else task.notes}
-    """.trimIndent()
+        """.trimIndent()
 
         val intent = Intent(
             Intent.ACTION_SENDTO

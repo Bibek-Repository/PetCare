@@ -1,109 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:orientation="vertical"
+    android:background="#FFFFFF">
 
-    <LinearLayout
+    <!-- Scrollable Home Content -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
-        <!-- Header -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🐾 PetCare"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Welcome to your pet care dashboard"
-            android:textSize="15sp" />
-
-        <!-- Add Pet Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/addPetButton"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="+ Add Pet"
-            android:textSize="16sp" />
+            android:orientation="vertical"
+            android:padding="24dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/viewTasksButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="✓ Care Tasks" />
+            <!-- Greeting -->
+            <TextView
+                android:id="@+id/greetingTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hi, User! 👋"
+                android:textSize="28sp"
+                android:textStyle="bold" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/viewPetsButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="🐾 My Pets"
-            android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Welcome back to PetCare"
+                android:textSize="16sp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/logoutButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="Logout" />
+            <!-- My Pets -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="My Pets"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
-        <!-- Today's Tasks -->
-        <!-- Today's Tasks -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="Today's Tasks"
-            android:textSize="21sp"
-            android:textStyle="bold" />
+            <!-- Horizontal Pets -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/homePetsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
+                android:layout_marginTop="12dp"
+                android:clipToPadding="false"
+                android:paddingEnd="8dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/todayTasksRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:nestedScrollingEnabled="false" />
+            <TextView
+                android:id="@+id/noHomePetsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:padding="16dp"
+                android:background="#F5F5F5"
+                android:text="🐾 You haven't added any pets yet."
+                android:textSize="16sp"
+                android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/noTodayTasksTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:padding="16dp"
-            android:background="#F5F5F5"
-            android:text="✓ No tasks for today"
-            android:textSize="16sp"
-            android:visibility="gone" />
+            <!-- Tasks -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:text="Tasks"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
-        <!-- Upcoming -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="Upcoming"
-            android:textSize="21sp"
-            android:textStyle="bold" />
+            <!-- Horizontal Tasks -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/homeTasksRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_marginTop="12dp"
+                android:clipToPadding="false"
+                android:paddingEnd="8dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:padding="16dp"
-            android:background="#F5F5F5"
-            android:text="🐾 No upcoming appointments"
-            android:textSize="16sp" />
+            <TextView
+                android:id="@+id/noHomeTasksTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:padding="16dp"
+                android:background="#F5F5F5"
+                android:text="✓ No tasks yet."
+                android:textSize="16sp"
+                android:visibility="gone" />
 
-    </LinearLayout>
+        </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
+
+    <!-- Bottom Navigation -->
+    <include
+        android:id="@+id/bottomNavigation"
+        layout="@layout/bottom_navigation" />
+
+</LinearLayout>

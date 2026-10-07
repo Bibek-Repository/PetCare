@@ -62,8 +62,39 @@ class PetsActivity : AppCompatActivity() {
             startActivity(Intent(this, AddPetActivity::class.java))
         }
 
-        loadPets()
+        // Bottom Navigation
+        val navHomeButton =
+            findViewById<MaterialButton>(R.id.navHomeButton)
 
+        val navPetsButton =
+            findViewById<MaterialButton>(R.id.navPetsButton)
+
+        val navTasksButton =
+            findViewById<MaterialButton>(R.id.navTasksButton)
+
+        val navProfileButton =
+            findViewById<MaterialButton>(R.id.navProfileButton)
+
+        navHomeButton.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
+
+        navPetsButton.setOnClickListener {
+            // Already on Pets
+        }
+
+        navTasksButton.setOnClickListener {
+            startActivity(Intent(this, TasksActivity::class.java))
+            finish()
+        }
+
+        navProfileButton.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+            finish()
+        }
+
+        loadPets()
     }
 
     private fun deletePet(pet: Pet) {

@@ -2,12 +2,10 @@ package com.bibekbaiju.petcare
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -16,11 +14,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
 
-    private lateinit var todayTasksRecyclerView: RecyclerView
-    private lateinit var noTodayTasksTextView: TextView
-    private lateinit var taskAdapter: TaskAdapter
+    private lateinit var homePetsRecyclerView: RecyclerView
+    private lateinit var noHomePetsTextView: TextView
 
-    private val todayTasks = mutableListOf<CareTask>()
+    private lateinit var homeTasksRecyclerView: RecyclerView
+    private lateinit var noHomeTasksTextView: TextView
+
+    private val homePets = mutableListOf<Pet>()
+    private val homeTasks = mutableListOf<CareTask>()
+
+    private lateinit var homePetAdapter: HomePetAdapter
+
+    private lateinit var homeTaskAdapter: HomeTaskAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,217 +35,169 @@ class MainActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
-        // Buttons
-        val addPetButton =
-            findViewById<MaterialButton>(R.id.addPetButton)
-
-        val viewTasksButton =
-            findViewById<MaterialButton>(R.id.viewTasksButton)
-
-        val viewPetsButton =
-            findViewById<MaterialButton>(R.id.viewPetsButton)
-
-        val logoutButton =
-            findViewById<MaterialButton>(R.id.logoutButton)
-
-        addPetButton.setOnClickListener {
-            startActivity(
-                Intent(this, AddPetActivity::class.java)
-            )
-        }
-
-        viewTasksButton.setOnClickListener {
-            startActivity(
-                Intent(this, TasksActivity::class.java)
-            )
-        }
-
-        viewPetsButton.setOnClickListener {
-            startActivity(
-                Intent(this, PetsActivity::class.java)
-            )
-        }
-
-        logoutButton.setOnClickListener {
-
-            FirebaseAuth.getInstance().signOut()
-
-            val intent = Intent(
-                this,
-                LoginActivity::class.java
-            )
-
-            intent.flags =
-                Intent.FLAG_ACTIVITY_NEW_TASK or
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-            startActivity(intent)
-            finish()
-        }
-
-        // Today's Tasks
-        todayTasksRecyclerView =
-            findViewById(R.id.todayTasksRecyclerView)
-
-        noTodayTasksTextView =
-            findViewById(R.id.noTodayTasksTextView)
-
-        taskAdapter = TaskAdapter(
-            todayTasks,
-
-            // Completed
-            onCompletedChange = { task, completed ->
-                updateTaskCompleted(task, completed)
-            },
-
-            // Edit
-            onEditClick = { task ->
-                val intent =
-                    Intent(this, EditTaskActivity::class.java)
-
-                intent.putExtra(
-                    "taskId",
-                    task.id
-                )
-
-                startActivity(intent)
-            },
-
-            // Delete
-            onDeleteClick = { task ->
-                deleteTask(task)
-            },
-
-            // Delegate
-            onDelegateClick = { task ->
-                delegateTaskBySms(task)
-            }
-        )
-
-        todayTasksRecyclerView.layoutManager =
-            LinearLayoutManager(this)
-
-        todayTasksRecyclerView.adapter =
-            taskAdapter
+        setupBottomNavigation()
+        setupPetRecyclerView()
     }
 
     override fun onResume() {
         super.onResume()
-        loadTodayTasks()
+
+        loadPets()
+        loadTasks()
+        homeTasks.clear()
     }
 
-    private fun loadTodayTasks() {
+    private fun setupPetRecyclerView() {
 
-        val currentUser = auth.currentUser
+        homePetsRecyclerView = findViewById(R.id.homePetsRecyclerView)
+        noHomePetsTextView = findViewById(R.id.noHomePetsTextView)
 
-        if (currentUser == null) {
-            return
+        homeTasksRecyclerView = findViewById(R.id.homeTasksRecyclerView)
+        noHomeTasksTextView = findViewById(R.id.noHomeTasksTextView)
+
+        homePetAdapter = HomePetAdapter(
+            homePets
+        ) {
+            startActivity(Intent(this, PetsActivity::class.java))
         }
+
+        homePetsRecyclerView.layoutManager =
+            LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+
+        homePetsRecyclerView.adapter = homePetAdapter
+
+
+        homeTaskAdapter = HomeTaskAdapter(
+            homeTasks
+        ) { task ->
+
+            val intent = Intent(this, EditTaskActivity::class.java)
+
+            intent.putExtra("taskId", task.id)
+
+            startActivity(intent)
+        }
+
+        homeTasksRecyclerView.layoutManager =
+            LinearLayoutManager(
+                this,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+
+        homeTasksRecyclerView.adapter = homeTaskAdapter
+    }
+
+    private fun loadPets() {
+
+        val currentUser = auth.currentUser ?: return
+
+        db.collection("pets")
+            .whereEqualTo("userId", currentUser.uid)
+            .get()
+            .addOnSuccessListener { result ->
+
+                homePets.clear()
+
+                for (document in result) {
+
+                    val pet = document.toObject(Pet::class.java)
+
+                    pet.id = document.id
+
+                    homePets.add(pet)
+                }
+
+                homeTaskAdapter.notifyDataSetChanged()
+
+                homePetAdapter.notifyDataSetChanged()
+
+                if (homePets.isEmpty()) {
+
+                    homePetsRecyclerView.visibility = android.view.View.GONE
+                    noHomePetsTextView.visibility = android.view.View.VISIBLE
+
+                } else {
+
+                    homePetsRecyclerView.visibility = android.view.View.VISIBLE
+                    noHomePetsTextView.visibility = android.view.View.GONE
+                }
+            }
+    }
+
+    private fun loadTasks() {
+
+        val currentUser = auth.currentUser ?: return
 
         db.collection("tasks")
             .whereEqualTo("userId", currentUser.uid)
             .get()
             .addOnSuccessListener { result ->
 
-                todayTasks.clear()
+                homeTasks.clear()
 
                 for (document in result) {
 
-                    val task =
-                        document.toObject(CareTask::class.java)
+                    val task = document.toObject(CareTask::class.java)
 
                     task.id = document.id
 
-                    /*
-                     * For now, Daily tasks are shown
-                     * on the dashboard.
-                     */
-                    if (task.frequency == "Daily") {
-                        todayTasks.add(task)
-                    }
+                    homeTasks.add(task)
                 }
 
-                taskAdapter.notifyDataSetChanged()
+                if (homeTasks.isEmpty()) {
 
-                if (todayTasks.isEmpty()) {
-
-                    todayTasksRecyclerView.visibility =
-                        View.GONE
-
-                    noTodayTasksTextView.visibility =
-                        View.VISIBLE
+                    noHomeTasksTextView.visibility = android.view.View.VISIBLE
+                    homeTasksRecyclerView.visibility = android.view.View.GONE
 
                 } else {
 
-                    todayTasksRecyclerView.visibility =
-                        View.VISIBLE
-
-                    noTodayTasksTextView.visibility =
-                        View.GONE
+                    noHomeTasksTextView.visibility = android.view.View.GONE
+                    homeTasksRecyclerView.visibility = android.view.View.VISIBLE
                 }
             }
     }
 
-    private fun updateTaskCompleted(
-        task: CareTask,
-        completed: Boolean
-    ) {
+    private fun setupBottomNavigation() {
 
-        db.collection("tasks")
-            .document(task.id)
-            .update("completed", completed)
-    }
+        val navHomeButton =
+            findViewById<com.google.android.material.button.MaterialButton>(
+                R.id.navHomeButton
+            )
 
-    private fun deleteTask(task: CareTask) {
+        val navPetsButton =
+            findViewById<com.google.android.material.button.MaterialButton>(
+                R.id.navPetsButton
+            )
 
-        db.collection("tasks")
-            .document(task.id)
-            .delete()
-            .addOnSuccessListener {
+        val navTasksButton =
+            findViewById<com.google.android.material.button.MaterialButton>(
+                R.id.navTasksButton
+            )
 
-                todayTasks.remove(task)
+        val navProfileButton =
+            findViewById<com.google.android.material.button.MaterialButton>(
+                R.id.navProfileButton
+            )
 
-                taskAdapter.notifyDataSetChanged()
+        navHomeButton.setOnClickListener {
+            // Already on Home
+        }
 
-                if (todayTasks.isEmpty()) {
+        navPetsButton.setOnClickListener {
+            startActivity(Intent(this, PetsActivity::class.java))
+        }
 
-                    todayTasksRecyclerView.visibility =
-                        View.GONE
+        navTasksButton.setOnClickListener {
+            startActivity(Intent(this, TasksActivity::class.java))
+        }
 
-                    noTodayTasksTextView.visibility =
-                        View.VISIBLE
-                }
-            }
-    }
-
-    private fun delegateTaskBySms(task: CareTask) {
-
-        val message = """
-            Hi, can you help with this pet care task?
-
-            Pet: ${task.petName}
-            Task: ${task.title}
-            Schedule: ${task.frequency} • ${task.time}
-            Supplies: ${if (task.supplies.isEmpty()) "None" else task.supplies}
-            Notes: ${if (task.notes.isEmpty()) "None" else task.notes}
-        """.trimIndent()
-
-        val intent =
-            Intent(Intent.ACTION_SENDTO)
-
-        intent.data =
-            android.net.Uri.parse("smsto:")
-
-        intent.putExtra(
-            "sms_body",
-            message
-        )
-
-        try {
-            startActivity(intent)
-        } catch (exception: Exception) {
-
-            // No SMS application available
+        navProfileButton.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
     }
 }
